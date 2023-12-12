@@ -1,6 +1,6 @@
 package ensisa.connect4.controller;
 
-import ensisa.connect4.GameView;
+import ensisa.connect4.view.GameView;
 import ensisa.connect4.model.Game;
 import ensisa.connect4.model.Token;
 
@@ -25,9 +25,10 @@ public class GameController {
         view.updateBoard();
     }
 
-    public boolean play(int column, Token token) {
+    public void play(int column) {
         int row = game.getFirstEmptyRow(column);
         if (row != -1) {
+            Token token = Token.values()[game.getCurrentPlayer()];
             game.setToken(row, column, token);
             view.updateBoard(row, column);
             if (game.isWinningMove(row, column, token)) {
@@ -37,14 +38,17 @@ public class GameController {
                 System.out.println("Draw!");
             }
             else {
+                nextPlayer();
                 System.out.println("Next player!");
             }
-            return true;
         }
         else {
             System.out.println("Column full!");
-            return false;
         }
+    }
+
+    private void nextPlayer() {
+        game.setCurrentPlayer(game.getNbPlayers() + 1 - game.getCurrentPlayer());
     }
 
 }

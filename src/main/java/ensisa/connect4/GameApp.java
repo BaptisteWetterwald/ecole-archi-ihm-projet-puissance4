@@ -2,12 +2,11 @@ package ensisa.connect4;
 
 import ensisa.connect4.controller.GameController;
 import ensisa.connect4.model.Game;
+import ensisa.connect4.view.GameView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class GameApp extends Application {
 

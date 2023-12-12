@@ -1,9 +1,7 @@
-package ensisa.connect4;
+package ensisa.connect4.view;
 
 import ensisa.connect4.controller.GameController;
 import ensisa.connect4.model.Game;
-import ensisa.connect4.model.Token;
-import ensisa.connect4.view.BoardPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -31,8 +29,8 @@ public class GameView extends Pane {
         boardPane.update(row, column);
     }
 
-    private boolean tryPlacement(int column, Token token) {
-        return controller.play(column, token);
+    public void tryPlacement(int column) {
+        controller.play(column);
     }
 
     public void printBoard() {
@@ -43,7 +41,6 @@ public class GameView extends Pane {
             System.out.println();
         }
     }
-
 
     public void setController(GameController gameController) {
         this.controller = gameController;

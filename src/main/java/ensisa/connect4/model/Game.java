@@ -69,10 +69,6 @@ public class Game {
         return true;
     }
 
-    public boolean isColumnFull(int column) {
-    	return board[0][column] != Token.EMPTY;
-    }
-
     public int getFirstEmptyRow(int column) {
     	for(int i = nbRows - 1; i >= 0; i--) {
     		if(board[i][column] == Token.EMPTY) {
@@ -82,12 +78,10 @@ public class Game {
     	return -1;
     }
 
-    public boolean isWinningMove(int column, Token token){
-        int row = getFirstEmptyRow(column);
-        return isWinningMove(row, column, token);
-    }
-
     public boolean isWinningMove(int row, int column, Token token){
+		if (token == Token.EMPTY) {
+			throw new IllegalArgumentException("Token cannot be empty!");
+		}
         return checkForWinHorizontal(row, token) || checkForWinVertical(column, token) || checkForWinDiagonalULBR(row, column, token) || checkForWinDiagonalBLUR(row, column, token);
     }
 
@@ -124,7 +118,6 @@ public class Game {
     }
 
 public boolean checkForWinDiagonalULBR(int row, int column, Token token) {
-
     	int count = 0;
     	int i = row;
     	int j = column;
@@ -160,7 +153,6 @@ public boolean checkForWinDiagonalULBR(int row, int column, Token token) {
     }
 
     public boolean checkForWinDiagonalBLUR(int row, int column, Token token) {
-
     	int count = 0;
     	int i = row;
     	int j = column;

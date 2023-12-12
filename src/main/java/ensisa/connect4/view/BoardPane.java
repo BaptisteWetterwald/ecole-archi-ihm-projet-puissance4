@@ -41,15 +41,16 @@ public class BoardPane extends GridPane {
 
 
     public void update(int row, int column){
+        removeAt(column, row);
+        TokenShape tokenShape = new TokenShape(game.getToken(row, column), this, game.getNbRows(), game.getNbColumns());
+        add(tokenShape, column, row);
     }
 
     public void update() {
         getChildren().clear();
         for (int i = 0; i < game.getNbRows(); i++) {
             for (int j = 0; j < game.getNbColumns(); j++) {
-                TokenShape tokenShape = new TokenShape(Token.EMPTY, this, game.getNbRows(), game.getNbColumns());
-                tokenShape.prefHeightProperty().bind(heightProperty().divide(game.getNbRows()));
-                tokenShape.prefWidthProperty().bind(widthProperty().divide(game.getNbColumns()));
+                TokenShape tokenShape = new TokenShape(game.getToken(i, j), this, game.getNbRows(), game.getNbColumns());
                 add(tokenShape, j, i);
             }
         }
