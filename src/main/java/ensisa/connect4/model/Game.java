@@ -7,23 +7,19 @@ public class Game {
     private final int nbRows;
     private final int nbColumns;
     private final int nbTokensToWin;
-    private final int nbPlayers;
+	private final int nbHumanPlayers;
 	private int currentPlayer;
 
     public Game(){
-        this.nbRows = 6;
-        this.nbColumns = 7;
-        this.nbTokensToWin = 4;
-        this.nbPlayers = 2;
-		this.currentPlayer = 1;
-        board = new Token[nbRows][nbColumns];
+		this(6, 7, 4, 1);
     }
 
-    public Game(int nbRows, int nbColumns, int nbTokensToWin, int nbPlayers){
+    public Game(int nbRows, int nbColumns, int nbTokensToWin, int nbHumanPlayers){
         this.nbRows = nbRows;
         this.nbColumns = nbColumns;
         this.nbTokensToWin = nbTokensToWin;
-        this.nbPlayers = nbPlayers;
+		this.currentPlayer = 1;
+		this.nbHumanPlayers = nbHumanPlayers;
         board = new Token[nbRows][nbColumns];
     }
 
@@ -37,10 +33,6 @@ public class Game {
 
     public int getNbTokensToWin() {
         return nbTokensToWin;
-    }
-
-    public int getNbPlayers() {
-        return nbPlayers;
     }
 
     public Token getToken(int row, int column){
@@ -194,4 +186,5 @@ public boolean checkForWinDiagonalULBR(int row, int column, Token token) {
 	public void setCurrentPlayer(int currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
+
 }

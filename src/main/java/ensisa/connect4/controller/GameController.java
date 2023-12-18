@@ -14,15 +14,16 @@ public class GameController {
         this.view = view;
         view.setController(this);
         view.setGame(game);
-        manageGame();
+        newGame();
     }
 
-    private void manageGame(){
+    public void newGame(){
         game.resetBoard();
         game.setCurrentPlayer(1);
         view.printBoard();
         view.setupBoard();
         view.updateBoard();
+        view.updateCurrentPlayer();
     }
 
     public void play(int column) {
@@ -33,9 +34,11 @@ public class GameController {
             view.updateBoard(row, column);
             if (game.isWinningMove(row, column, token)) {
                 System.out.println("Player " + token + " wins!");
+                view.notifyEndGame(token);
             }
             else if (game.isFull()) {
                 System.out.println("Draw!");
+                view.notifyEndGame(null);
             }
             else {
                 nextPlayer();
@@ -48,7 +51,8 @@ public class GameController {
     }
 
     private void nextPlayer() {
-        game.setCurrentPlayer(game.getNbPlayers() + 1 - game.getCurrentPlayer());
+        game.setCurrentPlayer(3 - game.getCurrentPlayer());
+        view.updateCurrentPlayer();
     }
 
 }

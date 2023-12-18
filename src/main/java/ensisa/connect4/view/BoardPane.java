@@ -2,6 +2,7 @@ package ensisa.connect4.view;
 
 import ensisa.connect4.model.Game;
 import ensisa.connect4.model.Token;
+import javafx.animation.TranslateTransition;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -16,14 +17,12 @@ public class BoardPane extends GridPane {
         super();
         this.game = game;
 
-        // bind the size of the board to the size of the window
-        prefHeightProperty().bind(parent.heightProperty().multiply(0.7));
-        prefWidthProperty().bind(heightProperty());
+        prefWidthProperty().bind(parent.heightProperty().multiply(0.8));
 
-        // display it at the bottom of the window
-        layoutYProperty().bind(parent.heightProperty().multiply(0.3));
         // center it horizontally
         layoutXProperty().bind(parent.widthProperty().subtract(widthProperty()).divide(2));
+        // display it at the bottom of the window
+        layoutYProperty().bind(parent.heightProperty().multiply(0.2));
 
         // set the background color
         setBackground(Background.fill(Color.BLUE));
@@ -39,11 +38,23 @@ public class BoardPane extends GridPane {
         update();
     }
 
-
     public void update(int row, int column){
-        removeAt(column, row);
         TokenShape tokenShape = new TokenShape(game.getToken(row, column), this, game.getNbRows(), game.getNbColumns());
+
+        TranslateTransition tt = new TranslateTransition();
+        tt.setNode(tokenShape);
+        tt.setDuration(javafx.util.Duration.millis(500));
+        tt.setFromY(tokenShape.getRadius()*2*(-game.getFirstEmptyRow(column) - 1));
+        tt.setToY(0);
+        tt.play();
+
+        //removeAt(column, row);
         add(tokenShape, column, row);
+        /*tokenShape.toBack();
+
+        tt.onFinishedProperty().set(event -> {
+            tokenShape.toFront();
+        });*/
     }
 
     public void update() {

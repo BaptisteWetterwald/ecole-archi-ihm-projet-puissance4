@@ -27,7 +27,7 @@ public class TokenShape extends Circle {
         });
     }
 
-    private Color getColor(Token token) {
+    static Color getColor(Token token) {
         switch (token) {
             case EMPTY -> {
                 return Color.WHITE;
