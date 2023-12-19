@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 public class GameApp extends Application {
 
     public static final String NAME = "Connect 4-tiche";
+
     public static void main(String[] args) {
         launch(args);
     }

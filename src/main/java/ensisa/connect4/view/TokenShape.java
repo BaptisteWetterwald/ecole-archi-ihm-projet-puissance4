@@ -1,7 +1,6 @@
 package ensisa.connect4.view;
 
 import ensisa.connect4.model.Token;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -23,7 +22,7 @@ public class TokenShape extends Circle {
 
         this.setOnMouseClicked(event -> {
             System.out.println("Clicked on token at coordinates " + GridPane.getRowIndex(this) + ", " + GridPane.getColumnIndex(this) + "!");
-            ((GameView)(parent.getParent())).tryPlacement(GridPane.getColumnIndex(this));
+            ((GameView) (parent.getParent().getParent())).tryPlacement(GridPane.getColumnIndex(this));
         });
     }
 
@@ -32,10 +31,10 @@ public class TokenShape extends Circle {
             case EMPTY -> {
                 return Color.WHITE;
             }
-            case PLAYER1 -> {
+            case RED -> {
                 return Color.RED;
             }
-            case PLAYER2 -> {
+            case YELLOW -> {
                 return Color.YELLOW;
             }
         }

@@ -9,4 +9,6 @@ module ensisa.connect4 {
     opens ensisa.connect4.controller to javafx.fxml;
     exports ensisa.connect4.view;
     opens ensisa.connect4.view to javafx.fxml;
+    exports ensisa.connect4.utility;
+    opens ensisa.connect4.utility to javafx.fxml;
 }

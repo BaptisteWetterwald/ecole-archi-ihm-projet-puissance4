@@ -4,16 +4,9 @@ import ensisa.connect4.GameApp;
 import ensisa.connect4.controller.GameController;
 import ensisa.connect4.model.Game;
 import ensisa.connect4.model.Token;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -23,9 +16,6 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
-import javafx.util.Duration;
 
 import static javafx.scene.paint.Color.BLACK;
 
@@ -36,21 +26,22 @@ public class GameView extends Pane {
     private BoardPane boardPane;
     private EndPopup endPopup;
     private Label currentPlayerLabel;
+    private CheckBox toggleAI;
 
     public GameView() {
         super();
 
         Rectangle colors = new Rectangle(this.getWidth(), this.getHeight(),
-            new LinearGradient(0f, 1f, 1f, 0f, true, CycleMethod.REPEAT,
-                new Stop(0, Color.web("#f8bd55")),
-                new Stop(0.14, Color.web("#c0fe56")),
-                new Stop(0.28, Color.web("#5dfbc1")),
-                new Stop(0.43, Color.web("#64c2f8")),
-                new Stop(0.57, Color.web("#be4af7")),
-                new Stop(0.71, Color.web("#ed5fc2")),
-                new Stop(0.85, Color.web("#ef504c")),
-                new Stop(1, Color.web("#f2660f"))
-            )
+                new LinearGradient(0f, 1f, 1f, 0f, true, CycleMethod.REPEAT,
+                        new Stop(0, Color.web("#f8bd55")),
+                        new Stop(0.14, Color.web("#c0fe56")),
+                        new Stop(0.28, Color.web("#5dfbc1")),
+                        new Stop(0.43, Color.web("#64c2f8")),
+                        new Stop(0.57, Color.web("#be4af7")),
+                        new Stop(0.71, Color.web("#ed5fc2")),
+                        new Stop(0.85, Color.web("#ef504c")),
+                        new Stop(1, Color.web("#f2660f"))
+                )
         );
         colors.widthProperty().bind(this.widthProperty());
         colors.heightProperty().bind(this.heightProperty());
@@ -61,7 +52,18 @@ public class GameView extends Pane {
         title.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(heightProperty().multiply(0.1).get()), heightProperty()));
 
         title.layoutXProperty().bind(widthProperty().subtract(title.widthProperty()).divide(2));
-        title.layoutYProperty().bind(heightProperty().multiply(0.05).subtract(title.heightProperty().divide(2)));
+        title.layoutYProperty().bind(heightProperty().multiply(0.1).subtract(title.heightProperty().divide(2)));
+
+        toggleAI = new CheckBox("Play against AI");
+        toggleAI.prefHeightProperty().bind(heightProperty().multiply(0.3));
+        toggleAI.prefWidthProperty().bind(widthProperty().multiply(0.3));
+        toggleAI.layoutXProperty().bind(widthProperty().subtract(toggleAI.widthProperty().divide(1.5)));
+        toggleAI.layoutYProperty().bind(heightProperty().multiply(0.1));
+        toggleAI.setFont(new Font(30));
+        toggleAI.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            controller.setAI(newValue);
+        });
+        getChildren().add(toggleAI);
     }
 
     public void setGame(Game game) {
@@ -102,6 +104,8 @@ public class GameView extends Pane {
         currentPlayerLabel.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(heightProperty().multiply(0.05).get()), heightProperty()));
         currentPlayerLabel.layoutXProperty().bind(widthProperty().subtract(currentPlayerLabel.widthProperty()).divide(2));
         currentPlayerLabel.layoutYProperty().bind(boardPane.layoutYProperty().add(boardPane.heightProperty()).add(10));
+
+        toggleAI.setDisable(false);
     }
 
     public void notifyEndGame(Token winner) {
@@ -110,6 +114,7 @@ public class GameView extends Pane {
         for (int i = 0; i < boardPane.getChildren().size(); i++) {
             boardPane.getChildren().get(i).setDisable(true);
         }
+        toggleAI.setDisable(true);
     }
 
     public void restart() {
@@ -117,8 +122,17 @@ public class GameView extends Pane {
     }
 
     public void updateCurrentPlayer() {
-        currentPlayerLabel.setText("It's player " + game.getCurrentPlayer() + "'s turn!");
+        currentPlayerLabel.setText("It's " + Token.values()[game.getCurrentPlayer()] + "'s turn!");
         currentPlayerLabel.setTextFill(TokenShape.getColor(Token.values()[game.getCurrentPlayer()]));
         currentPlayerLabel.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
     }
+
+    public void setToggleAI(CheckBox toggleAI) {
+        this.toggleAI = toggleAI;
+    }
+
+    public boolean isToggleAIChecked() {
+        return toggleAI.isSelected();
+    }
+
 }
